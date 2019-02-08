@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+        />
         <style>
          body {
+             position: fixed;
+             overflow: hidden;
+             margin: 0;
+             font-family: sans-serif;
              height: 100vh;
              width: 100vw;
              display: flex;
@@ -12,12 +20,18 @@
          }
          #note {
              font-size: 10em;
+             -moz-user-select: none; /* Firefox */
+             -ms-user-select: none; /* Internet Explorer */
+             -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+             -webkit-user-select: none; /* Chrome, Safari, and Opera */
+             -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
          }
         </style>
     </head>
     <body tabindex="0" onkeydown="return keydown(event)"  onkeyup="return keyup(event)">
 
         <div id="note"></div>
+        <div id="touch"></div>
 
         <script src="player.js"></script>
         <script src="trumpet.js"></script>
@@ -55,6 +69,51 @@
 
          function clearNote() {
            document.getElementById("note").innerHTML=""
+         }
+
+         document.addEventListener("touchstart", touchHandler);
+         document.addEventListener("touchmove", touchHandler);
+         document.addEventListener("touchend", touchHandler);
+         document.addEventListener("touchcancel", touchHandler);
+
+         function touchHandler(e) {
+           keys = new Map()
+           var tlist = ""
+
+           for (var i = 0; i < e.touches.length; i++) {
+             tlist = tlist + i + ": " + e.touches[i].pageX + "," + e.touches[i].pageY + "; "
+             if (e.touches[i].pageX < window.innerWidth / 2) {
+               if (e.touches[i].pageY < window.innerHeight / 8) {
+                 keys.set("y", true)
+               } else if (e.touches[i].pageY < 2*window.innerHeight / 8) {
+                 keys.set("t", true)
+               } else if (e.touches[i].pageY < 3*window.innerHeight / 8) {
+                 keys.set("r", true)
+               } else if (e.touches[i].pageY < 4*window.innerHeight / 8) {
+                 keys.set("e", true)
+               } else if (e.touches[i].pageY < 5*window.innerHeight / 8) {
+                 keys.set("g", true)
+               } else if (e.touches[i].pageY < 6*window.innerHeight / 8) {
+                 keys.set("f", true)
+               } else if (e.touches[i].pageY < 7*window.innerHeight / 8) {
+                 keys.set("d", true)
+               } else {
+                 keys.set("v", true)
+               }
+             } else {
+               if (e.touches[i].pageY < 2*window.innerHeight / 5) {
+                 keys.set("l", true)
+               } else if (e.touches[i].pageY < 3*window.innerHeight / 5) {
+                 keys.set("k", true)
+               } else {
+                 keys.set("j", true)
+               }
+             }
+           }
+
+           // document.getElementById("touch").innerHTML=e.touches[0].pageX + " " + e.touches[0].pageY + "<br />" + window.innerWidth + "<br />" + JSON.stringify(keys) + "<br />" + tlist
+
+           e.preventDefault()
          }
         </script>
     </body>
