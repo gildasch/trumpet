@@ -18,10 +18,9 @@
        }
 
        var player = new Player()
-       var trumpet = new Trumpet()
 
        function updatePlay() {
-         var note = trumpet.note(keys)
+         var note = Trumpet.note(keys)
 
          if (note == 0) {
            player.stop()

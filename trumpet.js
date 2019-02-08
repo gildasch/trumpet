@@ -1,8 +1,8 @@
-function Trumpet() {
-  this.valves = ["j", "k", "l"]
-  this.modifiers = ["v", "d", "f", "g", "e", "r", "t", "y"]
+var Trumpet = {
+  valves: ["j", "k", "l"],
+  modifiers: ["v", "d", "f", "g", "e", "r", "t", "y"],
 
-  this.note = function(keys) {
+  note: function(keys) {
     valve1 = keys.get(this.valves[0]) == true
     valve2 = keys.get(this.valves[1]) == true
     valve3 = keys.get(this.valves[2]) == true
@@ -21,9 +21,9 @@ function Trumpet() {
     }
 
     return this.calculateNote(modifier, valve1, valve2, valve3)
-  }
+  },
 
-  this.calculateNote = function(modifier, valve1, valve2, valve3) {
+  calculateNote: function(modifier, valve1, valve2, valve3) {
     var halftones = 0
 
     if (valve1) {
@@ -37,9 +37,9 @@ function Trumpet() {
     }
 
     return this.frequency(modifier, halftones)
-  }
+  },
 
-  this.frequency = function(modifier, halftones) {
+  frequency: function(modifier, halftones) {
     return 261.626 * (modifier/2) * Math.pow(2, halftones / 12)
   }
 }
