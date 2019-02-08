@@ -12,6 +12,14 @@ var Notes = {
     return key
   },
 
+  previous: function(freq) {
+    return freq / Math.pow(2, 1 / 12)
+  },
+
+  next: function(freq) {
+    return freq * Math.pow(2, 1 / 12)
+  },
+
   noteValues: {
     'C0': 16.35,
     'C#0': 17.32,
