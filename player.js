@@ -8,7 +8,7 @@ function Player() {
   var hornTable = this.context.createPeriodicWave(real, imag)
 
   this.play = function(freq) {
-    console.log("playing " + writtenNote(freq))
+    console.log("playing " + Notes.writtenNote(freq))
 
     if (this.playing) {
       this.o.frequency.value = freq
