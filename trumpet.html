@@ -1,35 +1,61 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-  </head>
-  <body tabindex="0" onkeydown="return keydown(event)"  onkeyup="return keyup(event)">
-      <script src="player.js"></script>
-      <script src="trumpet.js"></script>
-      <script src="notes.js"></script>
-      <script>
-       var keys = new Map()
-
-       function keydown(e) {
-         keys.set(e.key, true)
-       }
-
-       function keyup(e) {
-         keys.delete(e.key)
-       }
-
-       var player = new Player()
-
-       function updatePlay() {
-         var note = Trumpet.note(keys)
-
-         if (note == 0) {
-           player.stop()
-         } else {
-           player.play(note)
+    <head>
+        <style>
+         body {
+             height: 100vh;
+             width: 100vw;
+             display: flex;
+             flex-direction: column;
+             justify-content: center;
+             align-items: center;
          }
-       }
+         #note {
+             font-size: 10em;
+         }
+        </style>
+    </head>
+    <body tabindex="0" onkeydown="return keydown(event)"  onkeyup="return keyup(event)">
 
-       setInterval(updatePlay, 10)
-      </script>
-  </body>
+        <div id="note"></div>
+
+        <script src="player.js"></script>
+        <script src="trumpet.js"></script>
+        <script src="notes.js"></script>
+        <script>
+         var keys = new Map()
+
+         function keydown(e) {
+           keys.set(e.key, true)
+         }
+
+         function keyup(e) {
+           keys.delete(e.key)
+         }
+
+         var player = new Player()
+
+         function updatePlay() {
+           var note = Trumpet.note(keys)
+
+           if (note == 0) {
+             player.stop()
+             clearNote()
+           } else {
+             player.play(note)
+             showNote(note)
+           }
+         }
+
+         setInterval(updatePlay, 10)
+
+         function showNote(freq) {
+           document.getElementById("note").innerHTML=Notes.writtenNote(freq)
+         }
+
+         function clearNote() {
+           document.getElementById("note").innerHTML=""
+         }
+        </script>
+    </body>
 </html>
