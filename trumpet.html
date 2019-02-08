@@ -27,11 +27,9 @@
          } else {
            player.play(note)
          }
-
-         setTimeout(updatePlay, 10)
        }
 
-       updatePlay()
+       setInterval(updatePlay, 10)
 
        function writtenNote(freq) {
          var min = -1
