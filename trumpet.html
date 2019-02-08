@@ -4,125 +4,34 @@
   </head>
   <body tabindex="0" onkeydown="return keydown(event)"  onkeyup="return keyup(event)">
       <script src="player.js"></script>
+      <script src="trumpet.js"></script>
       <script>
-       var conf = {
-         harmonic: 0,
-         harmonicModifiers: [false,false,false,false,false],
-         J: false,
-         K: false,
-         L: false
-       }
+       var keys = new Map()
 
        function keydown(e) {
-         switch(e.key) {
-           case "w":
-             conf.harmonicModifiers[4] = true
-             break
-           case "q":
-             conf.harmonicModifiers[3] = true
-             break
-           case "s":
-             conf.harmonicModifiers[2] = true
-             break
-           case "a":
-             conf.harmonicModifiers[1] = true
-             break
-           case "z":
-             conf.harmonicModifiers[0] = true
-             break
-           case "j":
-             conf.J = true
-             break;
-           case "k":
-             conf.K = true
-             break
-           case "l":
-             conf.L = true
-             break
-         }
-
-         updateHarmonic()
+         keys.set(e.key, true)
        }
 
        function keyup(e) {
-         switch(e.key) {
-           case "w":
-             conf.harmonicModifiers[4] = false
-             break
-           case "q":
-             conf.harmonicModifiers[3] = false
-             break
-           case "s":
-             conf.harmonicModifiers[2] = false
-             break
-           case "a":
-             conf.harmonicModifiers[1] = false
-             break
-           case "z":
-             conf.harmonicModifiers[0] = false
-             break
-           case "j":
-             conf.J = false
-             break;
-           case "k":
-             conf.K = false
-             break
-           case "l":
-             conf.L = false
-             break
-         }
-
-         updateHarmonic()
-       }
-
-       function updateHarmonic() {
-         var h = 0
-         for (i = 0; i < conf.harmonicModifiers.length; i++) {
-           if (conf.harmonicModifiers[i]) {
-             h = i+1
-           }
-         }
-
-         conf.harmonic = h
+         keys.delete(e.key)
        }
 
        var player = new Player()
+       var trumpet = new Trumpet()
 
        function updatePlay() {
-         if (conf.harmonic == 0) {
+         var note = trumpet.note(keys)
+
+         if (note == 0) {
            player.stop()
-         } else if(conf.harmonic != 0) {
-           player.play(calculateNote(conf.harmonic, conf.J, conf.K, conf.L))
+         } else {
+           player.play(note)
          }
 
          setTimeout(updatePlay, 10)
        }
 
        updatePlay()
-
-       function calculateNote(harmonic, valve1, valve2, valve3) {
-         var halftone = 0
-
-         if (valve1) {
-           halftone -= 2
-         }
-         if (valve2) {
-           halftone -= 1
-         }
-         if (valve3) {
-           halftone -= 3
-         }
-
-         return frequency(harmonic/2, halftone)
-       }
-
-       function frequency(harmonic, halftone) {
-         return 261.626 * harmonic * Math.pow(2, halftone / 12)
-       }
-
-       function ln(x) {
-         return Math.log(x) / Math.log(2)
-       }
 
        function writtenNote(freq) {
          var min = -1
