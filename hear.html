@@ -58,22 +58,22 @@
         <div id="controls">
             <div class="note">
                 <div id="solution0" class="solution-note"></div>
-                <div id="note0" class="guessed-note"></div>
+                <div class="guessed-note"><span id="note0"></span> <span id="diff0"></span></div>
                 <button onclick="decrease(0)">-</button> <button onclick="increase(0)">+</button>
             </div>
             <div class="note">
                 <div id="solution1" class="solution-note"></div>
-                <div id="note1" class="guessed-note"></div>
+                <div class="guessed-note"><span id="note1"></span> <span id="diff1"></span></div>
                 <button onclick="decrease(1)">-</button> <button onclick="increase(1)">+</button>
             </div>
             <div class="note">
                 <div id="solution2" class="solution-note"></div>
-                <div id="note2" class="guessed-note"></div>
+                <div class="guessed-note"><span id="note2"></span> <span id="diff2"></span></div>
                 <button onclick="decrease(2)">-</button> <button onclick="increase(2)">+</button>
             </div>
             <div class="note">
                 <div id="solution3" class="solution-note"></div>
-                <div id="note3" class="guessed-note"></div>
+                <div class="guessed-note"><span id="note3"></span> <span id="diff3"></span></div>
                 <button onclick="decrease(3)">-</button> <button onclick="increase(3)">+</button>
             </div>
             <button onclick="ok()">OK</button>
@@ -84,14 +84,34 @@
         <script>
          var notes = [0,0,0,0]
 
+         function updateNotes() {
+           document.getElementById("note0").innerHTML=Notes.writtenNote(notes[0])
+           for (var i = 1; i < 4; i++) {
+             if (notes[i] == 0) {
+               continue
+             }
+             var diff = Notes.difference(notes[i-1], notes[i])
+             if (diff > 0) {
+               diff = "+" + diff
+             }
+             document.getElementById("note"+i).innerHTML=Notes.writtenNote(notes[i])
+             document.getElementById("diff"+i).innerHTML="(" + diff + ")"
+           }
+         }
+
          function setNote(i, freq) {
            notes[i] = freq
-           document.getElementById("note"+i).innerHTML=Notes.writtenNote(notes[i])
+           updateNotes()
          }
 
          function decrease(i) {
            if (notes[i] == 0) {
-             notes[i] = notes[0]
+             for (var ii = i-1; i >= 0; i--) {
+               if (notes[ii] != 0) {
+                 notes[i] = notes[ii]
+                 break
+               }
+             }
            }
 
            setNote(i, Notes.previous(notes[i]))
@@ -99,7 +119,12 @@
 
          function increase(i) {
            if (notes[i] == 0) {
-             notes[i] = notes[0]
+             for (var ii = i-1; i >= 0; i--) {
+               if (notes[ii] != 0) {
+                 notes[i] = notes[ii]
+                 break
+               }
+             }
            }
 
            setNote(i, Notes.next(notes[i]))

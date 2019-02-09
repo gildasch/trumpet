@@ -20,6 +20,31 @@ var Notes = {
     return freq * Math.pow(2, 1 / 12)
   },
 
+  difference: function(freq1, freq2) {
+    return this.noteNumber(freq2) - this.noteNumber(freq1)
+  },
+
+  noteNumber: function(freq) {
+    var min = -1
+    var key = 0
+    var i = 0
+    var previousNote = -1
+    for (note in this.noteValues) {
+      if (previousNote == this.noteValues[note]) {
+        continue
+      }
+      previousNote = this.noteValues[note]
+
+      if (min == -1 || Math.abs(freq - this.noteValues[note]) < min) {
+        min = Math.abs(freq - this.noteValues[note])
+        key = i
+      }
+      i++
+    }
+
+    return key
+  },
+
   noteValues: {
     'C0': 16.35,
     'C#0': 17.32,
