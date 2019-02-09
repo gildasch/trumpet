@@ -15,10 +15,12 @@
              width: 100vw;
              display: flex;
              flex-direction: column;
+         }
+         #content {
+             flex: 1;
+             display: flex;
              justify-content: center;
              align-items: center;
-         }
-         #note {
              font-size: 10em;
              -moz-user-select: none; /* Firefox */
              -ms-user-select: none; /* Internet Explorer */
@@ -26,12 +28,20 @@
              -webkit-user-select: none; /* Chrome, Safari, and Opera */
              -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
          }
+         #help {
+             padding: 20px;
+             text-align: center;
+         }
         </style>
     </head>
     <body tabindex="0" onkeydown="return keydown(event)"  onkeyup="return keyup(event)">
 
-        <div id="note"></div>
-        <div id="touch"></div>
+        <div id="content">
+            <div id="note"></div>
+            <div id="touch"></div>
+        </div>
+
+        <div id="help">v,d,f,g,e,r,t,y / j,k,l</div>
 
         <script src="player.js"></script>
         <script src="trumpet.js"></script>
