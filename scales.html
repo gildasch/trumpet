@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <style>
+         body {
+             margin: 0;
+             display: flex;
+             flex-direction: column;
+             height: 100vh;
+         }
+         button {
+             background: none;
+             border: 1px solid black;
+             border-radius: 5px;
+             padding: 20px;
+         }
+         #scales table {
+             text-align: center;
+             width: 100%;
+         }
+         #scales table th {
+             background-color: #21618C;
+             color: white;
+         }
+         #scales table .scale-name {
+             text-align: left;
+         }
+        </style>
+    </head>
+    <body>
+        <div id="scales">
+        </div>
+
+        <script src="player.js"></script>
+        <script src="notes.js"></script>
+        <script>
+         var scales = {
+           "Major": [0,2,2,1,2,2,2,1],
+           "Minor": [0,2,1,2,2,1,2,2],
+           "Minor 7th augmented": [0,2,1,2,2,1,3,1],
+           "Phrygian Dominant": [0,1,3,1,2,1,2,2],
+           "Pentatonic": [0,3,2,2,3,2],
+           "Blues": [0,3,2,1,1,3,2],
+         }
+
+         var scalesNotes = []
+
+         var player = new Player()
+
+         function play(i) {
+           notes = scalesNotes[i]
+           for (var i = 0; i < notes.length; i++) {
+             setTimeout(function(i) {
+               return function() {
+                 player.play(notes[i])
+               }
+             }(i), i*500)
+             setTimeout(function() { player.stop() }, (i+1)*500-100)
+           }
+         }
+
+         var startNotes = ["A4", "B4", "C4", "D4", "E4", "F4", "G4"]
+
+         function buildScales() {
+           var table = document.createElement('table')
+
+           Object.keys(scales).forEach(function(scale) {
+             var tr = document.createElement('tr')
+
+             var th = document.createElement('th')
+             th.setAttribute("class", "scale-name")
+             th.appendChild(document.createTextNode(scale))
+             tr.appendChild(th)
+
+             scales[scale].forEach(function(diff) {
+               var th = document.createElement('th')
+               th.appendChild(document.createTextNode("+" + diff))
+               tr.appendChild(th)
+             })
+
+             for (var i = 0; i < 8-scales[scale].length; i++) {
+               var th = document.createElement('th')
+               tr.appendChild(th)
+             }
+
+             tr.appendChild(document.createElement('th'))
+
+             table.appendChild(tr)
+
+             startNotes.forEach(function(start) {
+               var tr = document.createElement('tr')
+               tr.appendChild(document.createElement('td'))
+
+               currentNote = Notes.noteValues[start]
+               scaleNotes = []
+               scales[scale].forEach(function(diff) {
+                 for (var i = 0; i < diff; i++) {
+                   currentNote = Notes.next(currentNote)
+                 }
+                 scaleNotes.push(currentNote)
+
+                 var td = document.createElement('td')
+                 td.appendChild(document.createTextNode(Notes.writtenNote(currentNote)))
+                 tr.appendChild(td)
+               })
+
+               for (var i = 0; i < 8-scales[scale].length; i++) {
+                 var td = document.createElement('td')
+                 tr.appendChild(td)
+               }
+
+               scalesNotes.push(scaleNotes)
+
+               var td = document.createElement('td')
+               td.innerHTML='<button onclick="play(' + (scalesNotes.length-1) + ')">Play</button>'
+               tr.appendChild(td)
+
+               table.appendChild(tr)
+             })
+           })
+
+           document.getElementById("scales").appendChild(table)
+         }
+
+         buildScales()
+        </script>
+    </body>
+</html>
