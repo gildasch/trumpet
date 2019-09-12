@@ -21,12 +21,27 @@
              display: flex;
              justify-content: center;
              align-items: center;
-             font-size: 10em;
              -moz-user-select: none; /* Firefox */
              -ms-user-select: none; /* Internet Explorer */
              -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
              -webkit-user-select: none; /* Chrome, Safari, and Opera */
              -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+         }
+         #play-container {
+             width: 80%;
+             height: 30%;
+             display: flex;
+             flex-direction: row;
+             justify-content: center;
+             align-items: center;
+         }
+         #trumpet {
+             flex: 3 3;
+         }
+         #note {
+             height: 75%;
+             font-size: 10em;
+             flex: 2 2;
          }
          #help {
              padding: 20px;
@@ -37,11 +52,16 @@
     <body tabindex="0" onkeydown="return keydown(event)"  onkeyup="return keyup(event)">
 
         <div id="content">
-            <div id="note"></div>
+            <div id="play-container">
+              <div id="trumpet">
+                <img src="trumpet_with_valves.png" />
+              </div>
+              <div id="note"></div>
+            </div>
             <div id="touch"></div>
         </div>
 
-        <div id="help">v,d,f,g,e,r,t,y / j,k,l</div>
+        <div id="help">blow: v, d, f, g, e, r, t, y</div>
 
         <script src="player.js"></script>
         <script src="trumpet.js"></script>
